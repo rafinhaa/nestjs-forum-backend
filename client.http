@@ -1,0 +1,26 @@
+@hostname = http://localhost
+@port = 3000
+@baseUrl = {{hostname}}:{{port}}
+@contentType = application/json
+
+# @name create_account
+# @prompt unique Unique identification for user
+POST {{baseUrl}}/accounts
+Content-Type: {{contentType}}
+
+{
+  "name": "John Doe",
+  "email": "john.doe_{{unique}}@example.com",
+  "password": "12345678"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: {{contentType}}
+
+{
+  "email": "aa@aa.com",
+  "password": "12345678"
+}
