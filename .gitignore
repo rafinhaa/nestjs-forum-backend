@@ -39,3 +39,6 @@ lerna-debug.log*
 
 # Postgre docker folder
 data
+
+# Cert files
+*.pem
