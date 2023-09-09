@@ -46,7 +46,7 @@ export class AuthenticateController {
       throw new UnauthorizedException("Invalid credentials");
     }
 
-    const accessToken = await this.Jwt.sign({
+    const accessToken = this.Jwt.sign({
       sub: user.id,
     });
 
