@@ -17,10 +17,11 @@ Content-Type: {{contentType}}
 ###
 
 # @name authenticate
+# @prompt unique Unique identification for user
 POST {{baseUrl}}/sessions
 Content-Type: {{contentType}}
 
 {
-  "email": "aa@aa.com",
+  "email": "john.doe_{{unique}}@example.com",
   "password": "12345678"
 }
