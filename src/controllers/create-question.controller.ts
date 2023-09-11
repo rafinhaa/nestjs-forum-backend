@@ -1,17 +1,13 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
-import { z } from "zod";
+import { Controller, Post, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "src/auth/jwt-auth.guard";
-
-const createQuestionBodySchema = z.object({
-  email: z.string().email(),
-  password: z.string(),
-});
-
-type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>;
+import { CurrentUser } from "src/auth/current-user-decorator";
+import { UserPayload } from "src/auth/jwt-strategy.module";
 
 @Controller("/questions")
 @UseGuards(JwtAuthGuard)
 export class CreateQuestionController {
   @Post()
-  async handle(@Body() body: CreateQuestionBodySchema) {}
+  async handle(@CurrentUser() user: UserPayload) {
+    console.log(user);
+  }
 }
