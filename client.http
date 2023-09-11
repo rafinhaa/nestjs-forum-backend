@@ -35,6 +35,14 @@ Content-Type: {{contentType}}
 Authorization: Bearer {{authToken}}
 
 {
-  "title": "Nova pergunta 1",
+  "title": "Nova pergunta 2",
   "content": "Conteúdo da pergunta"
 }
+
+###
+
+# @name get_questions
+
+GET {{baseUrl}}/questions?page=1&limit=10
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}

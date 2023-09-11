@@ -2,11 +2,21 @@ import { BadRequestException, HttpStatus, PipeTransform } from "@nestjs/common";
 import { ZodError, ZodSchema } from "zod";
 
 export class ZodValidatePipe implements PipeTransform {
+  private value: unknown;
+
   constructor(private schema: ZodSchema) {}
+
+  getValue() {
+    return this.value;
+  }
+
+  setValue(value: unknown) {
+    this.value = value;
+  }
 
   transform(value: unknown) {
     try {
-      this.schema.parse(value);
+      this.setValue(this.schema.parse(value));
     } catch (error) {
       if (error instanceof ZodError) {
         throw new BadRequestException({
@@ -17,6 +27,6 @@ export class ZodValidatePipe implements PipeTransform {
       }
       throw new BadRequestException();
     }
-    return value;
+    return this.getValue();
   }
 }
