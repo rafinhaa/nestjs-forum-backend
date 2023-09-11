@@ -29,7 +29,12 @@ Content-Type: {{contentType}}
 
 ###
 
-# @name authenticate
+# @name create_question
 POST {{baseUrl}}/questions
 Content-Type: {{contentType}}
 Authorization: Bearer {{authToken}}
+
+{
+  "title": "Nova pergunta 1",
+  "content": "Conteúdo da pergunta"
+}
