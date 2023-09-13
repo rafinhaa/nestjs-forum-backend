@@ -8,6 +8,7 @@ export default defineConfig({
     exclude: ["node_modules", "data"],
     globals: true,
     root: "./",
+    setupFiles: ["./test/setup-e2e.ts"],
   },
   plugins: [
     tsConfigPaths(),
