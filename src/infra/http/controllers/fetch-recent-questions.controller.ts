@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from "@nestjs/common";
-import { JwtAuthGuard } from "@/auth/jwt-auth.guard";
-import { ZodValidatePipe } from "@/pipes/zod-validate-pipe";
-import { PrismaService } from "@/prisma/prisma.service";
+import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
+import { ZodValidatePipe } from "@/infra/http/pipes/zod-validate-pipe";
+import { PrismaService } from "@/infra/prisma/prisma.service";
 import { z } from "zod";
 
 const fetchRecentQuestionsParamsSchema = z.object({
