@@ -1,5 +1,5 @@
 import { Question } from "@/domain/forum/enterprise/entities/question";
-import { Question as PrismaQuestion } from "@prisma/client";
+import { Prisma, Question as PrismaQuestion } from "@prisma/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Slug } from "@/domain/forum/enterprise/entities/values-objects/slug";
 
@@ -19,5 +19,18 @@ export class PrismaQuestionMapper {
       },
       new UniqueEntityID(raw.id)
     );
+  }
+
+  static toPrisma(question: Question): Prisma.QuestionUncheckedCreateInput {
+    return {
+      id: question.id.toString(),
+      title: question.title,
+      content: question.content,
+      authorId: question.authorId.toString(),
+      bestAnswerId: question.bestAnswerId?.toString(),
+      slug: question.slug.value,
+      createdAt: question.createdAt,
+      updatedAt: question.updatedAt,
+    };
   }
 }
