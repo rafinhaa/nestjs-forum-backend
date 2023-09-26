@@ -53,4 +53,8 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
       question.id.toString()
     );
   }
+
+  async getPages(params: PaginationParams): Promise<number> {
+    return this.items.length;
+  }
 }
