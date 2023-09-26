@@ -4,6 +4,7 @@ import { ZodValidatePipe } from "@/infra/http/pipes/zod-validate-pipe";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { z } from "zod";
 import { FetchRecentQuestionsUseCase } from "@/domain/forum/application/use-cases/fetch-recent-questions";
+import { QuestionPresenter } from "../presenters/question-presenter";
 
 const fetchRecentQuestionsParamsSchema = z.object({
   page: z.coerce.number().optional().default(1),
@@ -32,9 +33,15 @@ export class FetchRecentQuestionsController {
       limitPerPage: params.limit,
     });
 
+    if (questions.isLeft()) {
+      throw new Error();
+    }
+
+    const result = questions.value;
+
     return {
-      pages: questions.value?.pages,
-      questions: questions.value?.questions,
+      pages: result.pages,
+      questions: result.questions.map(QuestionPresenter.toHTTP),
     };
   }
 }
