@@ -20,6 +20,10 @@ export class Student extends Entity<StudentProps> {
     return this.props.password;
   }
 
+  set password(password: string) {
+    this.props.password = password;
+  }
+
   static create(props: StudentProps, id?: UniqueEntityID) {
     const student = new Student(props, id);
 
