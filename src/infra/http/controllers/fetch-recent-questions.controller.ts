@@ -1,4 +1,10 @@
-import { Controller, Get, Query, UseGuards } from "@nestjs/common";
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
 import { JwtAuthGuard } from "@/infra/auth/jwt-auth.guard";
 import { ZodValidatePipe } from "@/infra/http/pipes/zod-validate-pipe";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
@@ -34,7 +40,7 @@ export class FetchRecentQuestionsController {
     });
 
     if (questions.isLeft()) {
-      throw new Error();
+      throw new BadRequestException();
     }
 
     const result = questions.value;
