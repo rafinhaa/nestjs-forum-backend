@@ -1,4 +1,3 @@
-import { Question } from "@/domain/forum/enterprise/entities/question";
 import { Student } from "../../enterprise/entities/student";
 
 export interface IStudentsRepository {
