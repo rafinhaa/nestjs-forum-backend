@@ -12,7 +12,7 @@ export class InMemoryAnswerCommentsRepository
     return item || null;
   }
 
-  async findManyByQuestionId(
+  async findManyByAnswerId(
     answerId: string,
     params: PaginationParams
   ): Promise<AnswerComment[]> {

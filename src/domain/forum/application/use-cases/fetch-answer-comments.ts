@@ -26,7 +26,7 @@ export class FetchAnswerCommentsUseCase {
     const limit = limitPerPage ?? DEFAULT_LIMIT;
 
     const answerComments =
-      await this.answerCommentsRepository.findManyByQuestionId(answerId, {
+      await this.answerCommentsRepository.findManyByAnswerId(answerId, {
         page,
         limitPerPage: limit,
       });
