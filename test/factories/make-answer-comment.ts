@@ -5,6 +5,9 @@ import {
   AnswerComment,
   AnswerCommentProps,
 } from "@/domain/forum/enterprise/entities/answer-comment";
+import { PrismaService } from "@/infra/database/prisma/prisma.service";
+import { Injectable } from "@nestjs/common";
+import { PrismaAnswerCommentMapper } from "@/infra/database/prisma/mappers/prisma-answer-comment-mapper";
 
 export const makeAnswerComment = (
   override?: Partial<AnswerCommentProps>,
@@ -20,3 +23,20 @@ export const makeAnswerComment = (
     id
   );
 };
+
+@Injectable()
+export class AnswerCommentFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAnswerComment(
+    data?: Partial<AnswerComment>
+  ): Promise<AnswerComment> {
+    const answerComment = makeAnswerComment(data);
+
+    await this.prisma.comment.create({
+      data: PrismaAnswerCommentMapper.toPrisma(answerComment),
+    });
+
+    return answerComment;
+  }
+}
