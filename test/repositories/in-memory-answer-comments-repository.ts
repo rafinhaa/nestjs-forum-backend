@@ -40,4 +40,8 @@ export class InMemoryAnswerCommentsRepository
 
     this.items.splice(itemIndex, 1);
   }
+
+  async getPages({ limitPerPage }: PaginationParams) {
+    return Math.ceil(this.items.length / limitPerPage);
+  }
 }

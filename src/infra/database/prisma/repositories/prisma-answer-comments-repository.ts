@@ -31,7 +31,7 @@ export class PrismaAnswerCommentsRepository
   ): Promise<AnswerComment[]> {
     const answersComments = await this.prisma.comment.findMany({
       where: {
-        questionId: answerId,
+        answerId,
       },
       orderBy: {
         createdAt: "desc",
@@ -61,5 +61,9 @@ export class PrismaAnswerCommentsRepository
         id: answerComment.id.toString(),
       },
     });
+  }
+
+  async getPages({ limitPerPage }: PaginationParams): Promise<number> {
+    return Math.ceil((await this.prisma.comment.count()) / limitPerPage);
   }
 }

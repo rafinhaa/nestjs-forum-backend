@@ -3,7 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { FetchQuestionCommentsController } from "../fetch-question-comments.controller";
 import { FetchQuestionCommentsUseCase } from "@/domain/forum/application/use-cases/fetch-question-comments";
 
-describe("FetchQuestionCommentController", () => {
+describe("FetchQuestionCommentsController", () => {
   let controller: FetchQuestionCommentsController;
   let fetchQuestionCommentUseCase: FetchQuestionCommentsUseCase;
 

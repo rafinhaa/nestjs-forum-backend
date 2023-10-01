@@ -21,8 +21,6 @@ export class DeleteAnswerCommentController {
   ) {
     const userId = user.sub;
 
-    console.log(userId, answerCommentId);
-
     const result = await this.deleteAnswerComment.execute({
       authorId: userId,
       answerCommentId,

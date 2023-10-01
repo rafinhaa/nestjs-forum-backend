@@ -9,6 +9,7 @@ interface IAnswerCommentsRepository {
   ): Promise<AnswerComment[]>;
   create(answerComment: AnswerComment): Promise<void>;
   delete(answerComment: AnswerComment): Promise<void>;
+  getPages(params: PaginationParams): Promise<number>;
 }
 
 export abstract class AnswerCommentsRepository
@@ -21,4 +22,5 @@ export abstract class AnswerCommentsRepository
   ): Promise<AnswerComment[]>;
   abstract create(answerComment: AnswerComment): Promise<void>;
   abstract delete(answerComment: AnswerComment): Promise<void>;
+  abstract getPages(params: PaginationParams): Promise<number>;
 }
