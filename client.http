@@ -46,3 +46,31 @@ Authorization: Bearer {{authToken}}
 GET {{baseUrl}}/questions?page=1&limit=10
 Content-Type: {{contentType}}
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_question_answer
+
+GET {{baseUrl}}/questions/d9bec026-1f98-4679-b1d7-fcc9863add17/answers
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+{
+  "content": "oi"
+}
+
+###
+
+# @name list_question_answers
+
+GET {{baseUrl}}/question/5b8775d0-8a54-414a-9394-87fc429127d6/answers
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name list_question_answers
+
+PATCH  {{baseUrl}}/answers/0f86f337-22f5-444b-9d61-85473c9ce360/choose-as-best
+Content-Type: {{contentType}}
+Authorization: Bearer {{authToken}}
