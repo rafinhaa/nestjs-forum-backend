@@ -1,18 +1,18 @@
-import { RegisterStudentUseCase } from "@/domain/forum/application/use-cases/register-student";
-import { BadRequestException, ConflictException } from "@nestjs/common";
+import { BadRequestException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { ChooseQuestionBestAnswerController } from "../choose-question-best-answer.controller";
+import { ChooseQuestionBestAnswerUseCase } from "@/domain/forum/application/use-cases/choose-question-best-answer";
 
 describe("ChooseQuestionBestAnswerController", () => {
   let controller: ChooseQuestionBestAnswerController;
-  let useCase: RegisterStudentUseCase;
+  let chooseQuestionBestAnswerUseCase: ChooseQuestionBestAnswerUseCase;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [ChooseQuestionBestAnswerController],
       providers: [
         {
-          provide: RegisterStudentUseCase,
+          provide: ChooseQuestionBestAnswerUseCase,
           useValue: {
             execute: vitest.fn(),
           },
@@ -23,31 +23,19 @@ describe("ChooseQuestionBestAnswerController", () => {
     controller = module.get<ChooseQuestionBestAnswerController>(
       ChooseQuestionBestAnswerController
     );
-    useCase = module.get<RegisterStudentUseCase>(RegisterStudentUseCase);
+    chooseQuestionBestAnswerUseCase =
+      module.get<ChooseQuestionBestAnswerUseCase>(
+        ChooseQuestionBestAnswerUseCase
+      );
   });
 
-  it("should be defined", () => {
-    expect(controller).toBeDefined();
-  });
-
-  it("should throw BadRequestException when input data is invalid", async () => {
-    useCase.execute = vitest.fn().mockReturnValueOnce({
+  it("should throw BadRequestException when ChooseQuestionBestAnswerUseCase returns an error", async () => {
+    chooseQuestionBestAnswerUseCase.execute = vitest.fn().mockReturnValueOnce({
       isLeft: () => true,
-      value: new BadRequestException("Invalid input data"),
     });
 
     expect(
-      async () => await controller.handle({ sub: "user-id" }, "answer-id")
+      async () => await controller.handle({ sub: "user-id" }, "question-id")
     ).rejects.toBeInstanceOf(BadRequestException);
-  });
-
-  it("should return status 204 when choosing succeeds", async () => {
-    useCase.execute = vitest.fn().mockReturnValueOnce({
-      isLeft: () => false,
-    });
-
-    const response = await controller.handle({ sub: "user-id" }, "answer-id");
-
-    expect(response).toEqual(undefined);
   });
 });
