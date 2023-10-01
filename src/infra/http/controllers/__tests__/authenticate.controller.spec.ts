@@ -52,11 +52,10 @@ describe("AuthenticateController", () => {
       value: new BadRequestException("Invalid input data"),
     });
 
-    try {
-      await controller.handle({ email: "invalid-email", password: "123" });
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
+    expect(
+      async () =>
+        await controller.handle({ email: "invalid-email", password: "123" })
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it("should return access token when authentication succeeds", async () => {

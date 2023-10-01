@@ -1,6 +1,6 @@
 import { Student } from "../../enterprise/entities/student";
 
-export interface IStudentsRepository {
+interface IStudentsRepository {
   findByEmail(email: string): Promise<Student | null>;
   create(student: Student): Promise<void>;
 }

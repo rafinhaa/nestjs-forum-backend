@@ -1,7 +1,7 @@
 import { PaginationParams } from "@/core/repositories/pagination-params";
 import { Question } from "@/domain/forum/enterprise/entities/question";
 
-export interface IQuestionsRepository {
+interface IQuestionsRepository {
   findById(questionId: string): Promise<Question | null>;
   findBySlug(slug: string): Promise<Question | null>;
   findManyRecent(params: PaginationParams): Promise<Question[]>;

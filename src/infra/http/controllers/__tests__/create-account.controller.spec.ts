@@ -51,15 +51,14 @@ describe("CreateAccountController", () => {
       value: new BadRequestException("Invalid input data"),
     });
 
-    try {
-      await controller.handle({
-        name: "John Doe",
-        email: "invalid-email",
-        password: "123",
-      });
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
+    expect(
+      async () =>
+        await controller.handle({
+          name: "John Doe",
+          email: "invalid-email",
+          password: "123",
+        })
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it("should return status 201 when registration succeeds", async () => {

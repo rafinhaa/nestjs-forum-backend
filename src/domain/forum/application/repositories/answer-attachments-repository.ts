@@ -1,6 +1,13 @@
-import { AnswerAttachment } from '../../enterprise/entities/answer-attachment'
+import { AnswerAttachment } from "../../enterprise/entities/answer-attachment";
 
-export interface AnswerAttachmentsRepository {
-  findManyByAnswerId(answerId: string): Promise<AnswerAttachment[]>
-  deleteManyByAnswerId(answerId: string): Promise<void>
+interface IAnswerAttachmentsRepository {
+  findManyByAnswerId(answerId: string): Promise<AnswerAttachment[]>;
+  deleteManyByAnswerId(answerId: string): Promise<void>;
+}
+
+export abstract class AnswerAttachmentsRepository
+  implements IAnswerAttachmentsRepository
+{
+  abstract findManyByAnswerId(answerId: string): Promise<AnswerAttachment[]>;
+  abstract deleteManyByAnswerId(answerId: string): Promise<void>;
 }

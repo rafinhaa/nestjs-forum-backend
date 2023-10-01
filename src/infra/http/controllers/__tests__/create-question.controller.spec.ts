@@ -31,16 +31,15 @@ describe("CreateQuestionController", () => {
       isLeft: () => true,
     });
 
-    try {
-      await controller.handle(
-        {
-          title: "Invalid Title",
-          content: "Invalid Content",
-        },
-        { sub: "user-id" }
-      );
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
+    expect(
+      async () =>
+        await controller.handle(
+          {
+            title: "Invalid Title",
+            content: "Invalid Content",
+          },
+          { sub: "user-id" }
+        )
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 });

@@ -33,13 +33,12 @@ describe("FetchRecentQuestionsController", () => {
       isLeft: () => true,
     });
 
-    try {
-      await controller.handle({
-        page: 1,
-        limit: 10,
-      });
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
+    expect(
+      async () =>
+        await controller.handle({
+          page: 1,
+          limit: 10,
+        })
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 });

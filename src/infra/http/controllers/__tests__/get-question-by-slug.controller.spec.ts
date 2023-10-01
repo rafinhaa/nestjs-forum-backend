@@ -37,11 +37,9 @@ describe("GetQuestionBySlugController", () => {
       isLeft: () => true,
     });
 
-    try {
-      await controller.handle("invalid-slug");
-    } catch (error) {
-      expect(error).toBeInstanceOf(BadRequestException);
-    }
+    expect(
+      async () => await controller.handle("invalid-slug")
+    ).rejects.toBeInstanceOf(BadRequestException);
   });
 
   it("should return a question when GetQuestionBySlugUseCase returns a right result", async () => {
