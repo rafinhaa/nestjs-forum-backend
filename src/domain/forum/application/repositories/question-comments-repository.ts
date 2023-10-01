@@ -9,6 +9,7 @@ interface IQuestionCommentsRepository {
   ): Promise<QuestionComment[]>;
   create(questionComment: QuestionComment): Promise<void>;
   delete(questionComment: QuestionComment): Promise<void>;
+  getPages(params: PaginationParams): Promise<number>;
 }
 
 export abstract class QuestionCommentsRepository
@@ -21,4 +22,5 @@ export abstract class QuestionCommentsRepository
   ): Promise<QuestionComment[]>;
   abstract create(questionComment: QuestionComment): Promise<void>;
   abstract delete(questionComment: QuestionComment): Promise<void>;
+  abstract getPages(params: PaginationParams): Promise<number>;
 }

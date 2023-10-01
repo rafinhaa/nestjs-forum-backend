@@ -58,4 +58,8 @@ export class PrismaQuestionCommentsRepository
       },
     });
   }
+
+  async getPages({ limitPerPage }: PaginationParams): Promise<number> {
+    return Math.ceil((await this.prisma.comment.count()) / limitPerPage);
+  }
 }

@@ -37,7 +37,7 @@ describe("CommentOnAnswerController", () => {
       async () =>
         await controller.handle(
           {
-            content: "Invalid Content",
+            content: "content",
           },
           { sub: "user-id" },
           "answer-id"

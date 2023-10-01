@@ -1,6 +1,7 @@
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 import { QuestionCommentsRepository } from "@/domain/forum/application/repositories/question-comments-repository";
 import { Either, right } from "@/core/either";
+import { Injectable } from "@nestjs/common";
 
 const DEFAULT_LIMIT = 20;
 
@@ -12,25 +13,29 @@ interface FetchQuestionCommentsUseCaseRequest {
 
 type FetchQuestionCommentsUseCaseResponse = Either<
   null,
-  { questionComments: QuestionComment[] }
+  { pages: number; questionComments: QuestionComment[] }
 >;
 
+@Injectable()
 export class FetchQuestionCommentsUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
   async execute({
     questionId,
     page,
-    limitPerPage,
+    limitPerPage = DEFAULT_LIMIT,
   }: FetchQuestionCommentsUseCaseRequest): Promise<FetchQuestionCommentsUseCaseResponse> {
-    const limit = limitPerPage ?? DEFAULT_LIMIT;
+    const pages = await this.questionCommentsRepository.getPages({
+      limitPerPage,
+      page,
+    });
 
     const questionComments =
       await this.questionCommentsRepository.findManyByQuestionId(questionId, {
         page,
-        limitPerPage: limit,
+        limitPerPage,
       });
 
-    return right({ questionComments });
+    return right({ pages, questionComments });
   }
 }
