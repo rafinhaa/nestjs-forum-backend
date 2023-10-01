@@ -1,11 +1,11 @@
-import { Either, left, right } from "@/core/either";
-import { Answer } from "../../enterprise/entities/answer";
+import { Answer } from "@/domain/forum/enterprise/entities/answer";
 import { AnswersRepository } from "../repositories/answers-repository";
-import { NotAllowedError } from "@/core/errors/errors/not-found-allowed-error";
+import { Either, left, right } from "@/core/either";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { AnswerAttachmentsRepository } from "../repositories/answers-attachments-repository";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { AnswerAttachmentList } from "../../enterprise/entities/answer-attachment-list";
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answer-attachments-repository";
 import { AnswerAttachment } from "../../enterprise/entities/answer-attachment";
 
 interface EditAnswerUseCaseRequest {
@@ -23,27 +23,27 @@ type EditAnswerUseCaseResponse = Either<
 export class EditAnswerUseCase {
   constructor(
     private answersRepository: AnswersRepository,
-    private answersAttachmentsRepository: AnswerAttachmentsRepository
+    private answerAttachmentsRepository: AnswerAttachmentsRepository
   ) {}
 
   async execute({
     authorId,
-    content,
     answerId,
+    content,
     attachmentsIds,
   }: EditAnswerUseCaseRequest): Promise<EditAnswerUseCaseResponse> {
     const answer = await this.answersRepository.findById(answerId);
 
     if (!answer) {
-      return left(new ResourceNotFoundError("Answer not found"));
+      return left(new ResourceNotFoundError());
     }
 
-    if (answer.authorId.toValue() !== authorId) {
+    if (authorId !== answer.authorId.toString()) {
       return left(new NotAllowedError());
     }
 
     const currentAnswerAttachments =
-      await this.answersAttachmentsRepository.findManyByAnswerId(answerId);
+      await this.answerAttachmentsRepository.findManyByAnswerId(answerId);
 
     const answerAttachmentList = new AnswerAttachmentList(
       currentAnswerAttachments
@@ -58,9 +58,7 @@ export class EditAnswerUseCase {
 
     answerAttachmentList.update(answerAttachments);
 
-    answer.content = content;
     answer.attachments = answerAttachmentList;
-
     answer.content = content;
 
     await this.answersRepository.save(answer);

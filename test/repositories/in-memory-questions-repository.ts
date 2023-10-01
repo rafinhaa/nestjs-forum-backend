@@ -11,33 +11,32 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
-  async findById(questionId: string): Promise<Question | null> {
-    return (
-      this.items.find((question) => question.id.toString() === questionId) ??
-      null
-    );
+  async findById(id: string) {
+    const question = this.items.find((item) => item.id.toString() === id);
+
+    if (!question) {
+      return null;
+    }
+
+    return question;
   }
 
-  async findBySlug(slug: string): Promise<Question | null> {
-    return this.items.find((question) => question.slug.value === slug) ?? null;
+  async findBySlug(slug: string) {
+    const question = this.items.find((item) => item.slug.value === slug);
+
+    if (!question) {
+      return null;
+    }
+
+    return question;
   }
 
-  async findManyRecent(params: PaginationParams): Promise<Question[]> {
+  async findManyRecent({ page, limitPerPage }: PaginationParams) {
     const questions = this.items
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-      .slice(
-        (params.page - 1) * params.limitPerPage,
-        params.page * params.limitPerPage
-      );
+      .slice((page - 1) * limitPerPage, page * limitPerPage);
 
     return questions;
-  }
-
-  async save(question: Question) {
-    const index = this.items.findIndex((q) => q.id === question.id);
-    this.items[index] = question;
-
-    DomainEvents.dispatchEventsForAggregate(question.id);
   }
 
   async create(question: Question) {
@@ -46,9 +45,19 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     DomainEvents.dispatchEventsForAggregate(question.id);
   }
 
+  async save(question: Question) {
+    const itemIndex = this.items.findIndex((item) => item.id === question.id);
+
+    this.items[itemIndex] = question;
+
+    DomainEvents.dispatchEventsForAggregate(question.id);
+  }
+
   async delete(question: Question) {
-    const index = this.items.findIndex((q) => q.id === question.id);
-    this.items.splice(index, 1);
+    const itemIndex = this.items.findIndex((item) => item.id === question.id);
+
+    this.items.splice(itemIndex, 1);
+
     this.questionAttachmentsRepository.deleteManyByQuestionId(
       question.id.toString()
     );

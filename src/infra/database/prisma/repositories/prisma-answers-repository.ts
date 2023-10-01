@@ -22,6 +22,7 @@ export class PrismaAnswersRepository implements AnswersRepository {
 
     return PrismaAnswerMapper.toDomain(answer);
   }
+
   async findManyByQuestionId(
     questionId: string,
     params: PaginationParams
@@ -37,33 +38,33 @@ export class PrismaAnswersRepository implements AnswersRepository {
       skip: (params.page - 1) * params.limitPerPage,
     });
 
-    if (!answers) {
-      return [];
-    }
-
     return answers.map(PrismaAnswerMapper.toDomain);
   }
+
   async create(answer: Answer): Promise<void> {
     const data = PrismaAnswerMapper.toPrisma(answer);
+
     await this.prisma.answer.create({
       data,
     });
   }
-  async delete(answer: Answer): Promise<void> {
-    const data = PrismaAnswerMapper.toPrisma(answer);
-    await this.prisma.answer.delete({
-      where: {
-        id: data.id,
-      },
-    });
-  }
+
   async save(answer: Answer): Promise<void> {
     const data = PrismaAnswerMapper.toPrisma(answer);
+
     await this.prisma.answer.update({
       where: {
-        id: data.id,
+        id: answer.id.toString(),
       },
       data,
+    });
+  }
+
+  async delete(answer: Answer): Promise<void> {
+    await this.prisma.question.delete({
+      where: {
+        id: answer.id.toString(),
+      },
     });
   }
 }

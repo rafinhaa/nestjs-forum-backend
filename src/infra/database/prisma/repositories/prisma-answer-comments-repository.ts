@@ -24,6 +24,7 @@ export class PrismaAnswerCommentsRepository
 
     return PrismaAnswerCommentMapper.toDomain(answerComment);
   }
+
   async findManyByAnswerId(
     answerId: string,
     params: PaginationParams
@@ -45,12 +46,15 @@ export class PrismaAnswerCommentsRepository
 
     return answersComments.map(PrismaAnswerCommentMapper.toDomain);
   }
+
   async create(answerComment: AnswerComment): Promise<void> {
     const data = PrismaAnswerCommentMapper.toPrisma(answerComment);
+
     await this.prisma.comment.create({
       data,
     });
   }
+
   async delete(answerComment: AnswerComment): Promise<void> {
     await this.prisma.comment.delete({
       where: {

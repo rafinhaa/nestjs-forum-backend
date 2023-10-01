@@ -16,6 +16,8 @@ export class Attachment extends Entity<AttachmentProps> {
   }
 
   static create(props: AttachmentProps, id?: UniqueEntityID) {
-    return new Attachment(props, id);
+    const attachment = new Attachment(props, id);
+
+    return attachment;
   }
 }

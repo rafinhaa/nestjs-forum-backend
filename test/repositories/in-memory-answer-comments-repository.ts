@@ -7,17 +7,19 @@ export class InMemoryAnswerCommentsRepository
 {
   public items: AnswerComment[] = [];
 
-  async findById(id: string): Promise<AnswerComment | null> {
-    const item = this.items.find((item) => item.id.toString() === id);
-    return item || null;
+  async findById(id: string) {
+    const answerComment = this.items.find((item) => item.id.toString() === id);
+
+    if (!answerComment) {
+      return null;
+    }
+
+    return answerComment;
   }
 
-  async findManyByAnswerId(
-    answerId: string,
-    params: PaginationParams
-  ): Promise<AnswerComment[]> {
+  async findManyByAnswerId(answerId: string, params: PaginationParams) {
     const answerComments = this.items
-      .filter((comments) => comments.answerId.toString() === answerId)
+      .filter((item) => item.answerId.toString() === answerId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(
         (params.page - 1) * params.limitPerPage,
@@ -32,9 +34,10 @@ export class InMemoryAnswerCommentsRepository
   }
 
   async delete(answerComment: AnswerComment) {
-    const index = this.items.findIndex(
-      (item) => item.id.toString() === answerComment.id.toString()
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === answerComment.id
     );
-    this.items.splice(index, 1);
+
+    this.items.splice(itemIndex, 1);
   }
 }

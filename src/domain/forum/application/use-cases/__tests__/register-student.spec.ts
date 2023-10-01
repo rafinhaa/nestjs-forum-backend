@@ -1,18 +1,18 @@
 import { RegisterStudentUseCase } from "../register-student";
 import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
-import { FakerHasher } from "test/cryptography/faker-hasher";
+import { FakeHasher } from "test/cryptography/fake-hasher";
 import { StudentAlreadyExistsError } from "../errors/student-already-exists-error";
 
 let inMemoryStudentsRepository: InMemoryStudentsRepository;
-let fakerHasher: FakerHasher;
+let fakeHasher: FakeHasher;
 
 let sut: RegisterStudentUseCase;
 
 describe("Register Student", () => {
   beforeEach(() => {
     inMemoryStudentsRepository = new InMemoryStudentsRepository();
-    fakerHasher = new FakerHasher();
-    sut = new RegisterStudentUseCase(inMemoryStudentsRepository, fakerHasher);
+    fakeHasher = new FakeHasher();
+    sut = new RegisterStudentUseCase(inMemoryStudentsRepository, fakeHasher);
   });
 
   it("should be able to register a new student", async () => {
@@ -35,7 +35,7 @@ describe("Register Student", () => {
       password: "password",
     });
 
-    const hashedPassword = await fakerHasher.hash("password");
+    const hashedPassword = await fakeHasher.hash("password");
 
     expect(result.isRight()).toBe(true);
     expect(inMemoryStudentsRepository.items[0].password).toEqual(

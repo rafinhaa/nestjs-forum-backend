@@ -1,6 +1,6 @@
-import { Student } from "@/domain/forum/enterprise/entities/student";
-import { Prisma, User as PrismaUser } from "@prisma/client";
+import { User as PrismaUser, Prisma } from "@prisma/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { Student } from "@/domain/forum/enterprise/entities/student";
 
 export class PrismaStudentMapper {
   static toDomain(raw: PrismaUser): Student {

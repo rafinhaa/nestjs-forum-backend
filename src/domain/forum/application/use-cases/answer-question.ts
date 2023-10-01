@@ -20,8 +20,8 @@ export class AnswerQuestionUseCase {
   async execute({
     instructorId,
     questionId,
-    attachmentsIds,
     content,
+    attachmentsIds,
   }: AnswerQuestionUseCaseRequest): Promise<AnswerQuestionUseCaseResponse> {
     const answer = Answer.create({
       content,
@@ -29,14 +29,14 @@ export class AnswerQuestionUseCase {
       questionId: new UniqueEntityID(questionId),
     });
 
-    const questionAttachments = attachmentsIds.map((attachmentId) => {
+    const answerAttachments = attachmentsIds.map((attachmentId) => {
       return AnswerAttachment.create({
         attachmentId: new UniqueEntityID(attachmentId),
         answerId: answer.id,
       });
     });
 
-    answer.attachments = new AnswerAttachmentList(questionAttachments);
+    answer.attachments = new AnswerAttachmentList(answerAttachments);
 
     await this.answersRepository.create(answer);
 

@@ -4,7 +4,7 @@ import { INestApplication } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
 import request from "supertest";
 
-describe("CreateAccountController e2e", () => {
+describe("Create Account (E2E)", () => {
   let app: INestApplication;
   let prisma: PrismaService;
 
@@ -27,7 +27,7 @@ describe("CreateAccountController e2e", () => {
       password: "123456",
     });
 
-    expect(response.status).toBe(201);
+    expect(response.statusCode).toBe(201);
 
     const userOnDatabase = await prisma.user.findUnique({
       where: {
@@ -45,5 +45,28 @@ describe("CreateAccountController e2e", () => {
         password: expect.any(String),
       })
     );
+  });
+
+  test("[POST] /accounts already exists", async () => {
+    const studentEmail = "johndoe@example.com";
+
+    await request(app.getHttpServer()).post("/accounts").send({
+      name: "John Doe",
+      email: studentEmail,
+      password: "123456",
+    });
+
+    const response = await request(app.getHttpServer()).post("/accounts").send({
+      name: "John Doe 2",
+      email: studentEmail,
+      password: "123456",
+    });
+
+    expect(response.statusCode).toBe(409);
+    expect(response.body).toEqual({
+      error: "Conflict",
+      message: `Student \"${studentEmail}\" already exists.`,
+      statusCode: 409,
+    });
   });
 });

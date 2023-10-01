@@ -7,17 +7,21 @@ export class InMemoryQuestionCommentsRepository
 {
   public items: QuestionComment[] = [];
 
-  async findById(id: string): Promise<QuestionComment | null> {
-    const item = this.items.find((item) => item.id.toString() === id);
-    return item || null;
+  async findById(id: string) {
+    const questionComment = this.items.find(
+      (item) => item.id.toString() === id
+    );
+
+    if (!questionComment) {
+      return null;
+    }
+
+    return questionComment;
   }
 
-  async findManyByQuestionId(
-    questionId: string,
-    params: PaginationParams
-  ): Promise<QuestionComment[]> {
+  async findManyByQuestionId(questionId: string, params: PaginationParams) {
     const questionComments = this.items
-      .filter((comments) => comments.questionId.toString() === questionId)
+      .filter((item) => item.questionId.toString() === questionId)
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice(
         (params.page - 1) * params.limitPerPage,
@@ -32,9 +36,10 @@ export class InMemoryQuestionCommentsRepository
   }
 
   async delete(questionComment: QuestionComment) {
-    const index = this.items.findIndex(
-      (item) => item.id.toString() === questionComment.id.toString()
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === questionComment.id
     );
-    this.items.splice(index, 1);
+
+    this.items.splice(itemIndex, 1);
   }
 }

@@ -1,12 +1,12 @@
 import { makeAnswer } from "test/factories/make-answer";
 import { InMemoryAnswersRepository } from "test/repositories/in-memory-answers-repository";
-import { FetchQuestionsAnswersUseCase } from "../fetch-questions-answers";
+import { FetchQuestionAnswersUseCase } from "../fetch-question-answers";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { InMemoryAnswerAttachmentsRepository } from "test/repositories/in-memory-answer-attachments-repository";
 
 let inMemoryAnswersRepository: InMemoryAnswersRepository;
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository;
-let sut: FetchQuestionsAnswersUseCase;
+let sut: FetchQuestionAnswersUseCase;
 
 const QUESTION1_ID = new UniqueEntityID("question-1");
 
@@ -17,10 +17,10 @@ describe("Fetch Questions Answers", () => {
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
       inMemoryAnswerAttachmentsRepository
     );
-    sut = new FetchQuestionsAnswersUseCase(inMemoryAnswersRepository);
+    sut = new FetchQuestionAnswersUseCase(inMemoryAnswersRepository);
   });
 
-  it("should be able to fetch questions answers", async () => {
+  it("should be able to fetch question answers", async () => {
     await inMemoryAnswersRepository.create(
       makeAnswer({ createdAt: new Date(2023, 0, 20), questionId: QUESTION1_ID })
     );
@@ -36,6 +36,7 @@ describe("Fetch Questions Answers", () => {
       page: 1,
     });
 
+    expect(result.value?.answers).toHaveLength(3);
     expect(result.value?.answers).toEqual([
       expect.objectContaining({
         createdAt: new Date(2023, 0, 23),

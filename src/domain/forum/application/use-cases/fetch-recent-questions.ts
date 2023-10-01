@@ -1,11 +1,11 @@
-import { Either, right } from "@/core/either";
-import { Question } from "../../enterprise/entities/question";
+import { Question } from "@/domain/forum/enterprise/entities/question";
 import { QuestionsRepository } from "../repositories/questions-repository";
+import { Either, right } from "@/core/either";
 import { Injectable } from "@nestjs/common";
 
 const DEFAULT_LIMIT = 20;
 
-interface FetchRecentQuestionsCaseRequest {
+interface FetchRecentQuestionsUseCaseRequest {
   page: number;
   limitPerPage?: number;
 }
@@ -22,7 +22,7 @@ export class FetchRecentQuestionsUseCase {
   async execute({
     page,
     limitPerPage = DEFAULT_LIMIT,
-  }: FetchRecentQuestionsCaseRequest): Promise<FetchRecentQuestionsUseCaseResponse> {
+  }: FetchRecentQuestionsUseCaseRequest): Promise<FetchRecentQuestionsUseCaseResponse> {
     const pages = await this.questionsRepository.getPages({
       limitPerPage,
     });

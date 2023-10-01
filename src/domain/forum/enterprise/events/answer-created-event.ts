@@ -1,6 +1,6 @@
+import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { DomainEvent } from "@/core/events/domain-event";
 import { Answer } from "../entities/answer";
-import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 
 export class AnswerCreatedEvent implements DomainEvent {
   public ocurredAt: Date;
@@ -10,6 +10,7 @@ export class AnswerCreatedEvent implements DomainEvent {
     this.answer = answer;
     this.ocurredAt = new Date();
   }
+
   getAggregateId(): UniqueEntityID {
     return this.answer.id;
   }

@@ -6,10 +6,10 @@ import {
   UnauthorizedException,
   UsePipes,
 } from "@nestjs/common";
+import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
-import { ZodValidatePipe } from "@/infra/http/pipes/zod-validate-pipe";
 import { AuthenticateStudentUseCase } from "@/domain/forum/application/use-cases/authenticate-student";
-import { WrongCredentialError } from "@/domain/forum/application/use-cases/errors/wrong-credential-error";
+import { WrongCredentialsError } from "@/domain/forum/application/use-cases/errors/wrong-credentials-error";
 import { Public } from "@/infra/auth/public";
 
 const authenticateBodySchema = z.object({
@@ -22,30 +22,33 @@ type AuthenticateBodySchema = z.infer<typeof authenticateBodySchema>;
 @Controller("/sessions")
 @Public()
 export class AuthenticateController {
-  constructor(
-    private readonly authenticateStudentUseCase: AuthenticateStudentUseCase
-  ) {}
+  constructor(private authenticateStudent: AuthenticateStudentUseCase) {}
 
   @Post()
-  @UsePipes(new ZodValidatePipe(authenticateBodySchema))
+  @UsePipes(new ZodValidationPipe(authenticateBodySchema))
   async handle(@Body() body: AuthenticateBodySchema) {
     const { email, password } = body;
 
-    const student = await this.authenticateStudentUseCase.execute({
+    const result = await this.authenticateStudent.execute({
       email,
       password,
     });
 
-    if (student.isLeft()) {
-      const error = student.value;
+    if (result.isLeft()) {
+      const error = result.value;
+
       switch (error.constructor) {
-        case WrongCredentialError:
+        case WrongCredentialsError:
           throw new UnauthorizedException(error.message);
         default:
           throw new BadRequestException(error.message);
       }
     }
 
-    return { accessToken: student.value.accessToken };
+    const { accessToken } = result.value;
+
+    return {
+      accessToken: accessToken,
+    };
   }
 }

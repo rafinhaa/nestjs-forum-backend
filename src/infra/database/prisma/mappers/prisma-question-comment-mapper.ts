@@ -1,11 +1,11 @@
-import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
-import { Prisma, Comment as PrismaComment } from "@prisma/client";
+import { Comment as PrismaComment, Prisma } from "@prisma/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 
 export class PrismaQuestionCommentMapper {
   static toDomain(raw: PrismaComment): QuestionComment {
     if (!raw.questionId) {
-      throw new Error("questionId is required");
+      throw new Error("Invalid comment type.");
     }
 
     return QuestionComment.create(
@@ -25,9 +25,9 @@ export class PrismaQuestionCommentMapper {
   ): Prisma.CommentUncheckedCreateInput {
     return {
       id: questionComment.id.toString(),
-      content: questionComment.content,
       authorId: questionComment.authorId.toString(),
       questionId: questionComment.questionId.toString(),
+      content: questionComment.content,
       createdAt: questionComment.createdAt,
       updatedAt: questionComment.updatedAt,
     };

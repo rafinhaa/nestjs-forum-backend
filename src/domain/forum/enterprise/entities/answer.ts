@@ -1,9 +1,8 @@
-import { Entity } from "@/core/entities/entity";
+import { AggregateRoot } from "@/core/entities/aggregate-root";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Optional } from "@/core/types/optional";
-import { AnswerAttachmentList } from "./answer-attachment-list";
-import { AggregateRoot } from "@/core/entities/aggregate-root";
-import { AnswerCreatedEvent } from "../events/answer-created-event";
+import { AnswerAttachmentList } from "@/domain/forum/enterprise/entities/answer-attachment-list";
+import { AnswerCreatedEvent } from "@/domain/forum/enterprise/events/answer-created-event";
 
 export interface AnswerProps {
   authorId: UniqueEntityID;
@@ -27,8 +26,18 @@ export class Answer extends AggregateRoot<AnswerProps> {
     return this.props.content;
   }
 
+  set content(content: string) {
+    this.props.content = content;
+    this.touch();
+  }
+
   get attachments() {
     return this.props.attachments;
+  }
+
+  set attachments(attachments: AnswerAttachmentList) {
+    this.props.attachments = attachments;
+    this.touch();
   }
 
   get createdAt() {
@@ -47,16 +56,6 @@ export class Answer extends AggregateRoot<AnswerProps> {
     this.props.updatedAt = new Date();
   }
 
-  set content(content: string) {
-    this.props.content = content;
-    this.touch();
-  }
-
-  set attachments(attachments: AnswerAttachmentList) {
-    this.props.attachments = attachments;
-    this.touch();
-  }
-
   static create(
     props: Optional<AnswerProps, "createdAt" | "attachments">,
     id?: UniqueEntityID
@@ -72,7 +71,9 @@ export class Answer extends AggregateRoot<AnswerProps> {
 
     const isNewAnswer = !id;
 
-    if (isNewAnswer) answer.addDomainEvent(new AnswerCreatedEvent(answer));
+    if (isNewAnswer) {
+      answer.addDomainEvent(new AnswerCreatedEvent(answer));
+    }
 
     return answer;
   }

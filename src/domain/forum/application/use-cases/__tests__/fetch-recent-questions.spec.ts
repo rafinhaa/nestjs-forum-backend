@@ -59,7 +59,7 @@ describe("Fetch Recent Questions", () => {
   });
 
   it("should be able to fetch paginate recent questions with limit", async () => {
-    for (let i = 1; i < 10; i++) {
+    for (let i = 1; i <= 10; i++) {
       await inMemoryQuestionsRepository.create(
         makeQuestion({ createdAt: new Date(2023, 0, i) })
       );

@@ -2,7 +2,7 @@ import { faker } from "@faker-js/faker";
 
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { Question } from "@/domain/forum/enterprise/entities/question";
-import { Slug } from "@/domain/forum/enterprise/entities/values-objects/slug";
+import { Slug } from "@/domain/forum/enterprise/entities/value-objects/slug";
 import { PrismaService } from "@/infra/database/prisma/prisma.service";
 import { PrismaQuestionMapper } from "@/infra/database/prisma/mappers/prisma-question-mapper";
 import { Injectable } from "@nestjs/common";

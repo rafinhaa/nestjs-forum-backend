@@ -1,10 +1,10 @@
 import { InMemoryQuestionCommentsRepository } from "test/repositories/in-memory-question-comments-repository";
-import { FetchQuestionsCommentsUseCase } from "../fetch-questions-comments";
+import { FetchQuestionCommentsUseCase } from "../fetch-question-comments";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { makeQuestionComment } from "test/factories/make-question-comment";
 
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository;
-let sut: FetchQuestionsCommentsUseCase;
+let sut: FetchQuestionCommentsUseCase;
 
 const QUESTION1_ID = new UniqueEntityID("question-1");
 
@@ -12,10 +12,10 @@ describe("Fetch Questions Comments", () => {
   beforeEach(() => {
     inMemoryQuestionCommentsRepository =
       new InMemoryQuestionCommentsRepository();
-    sut = new FetchQuestionsCommentsUseCase(inMemoryQuestionCommentsRepository);
+    sut = new FetchQuestionCommentsUseCase(inMemoryQuestionCommentsRepository);
   });
 
-  it("should be able to fetch questions comments", async () => {
+  it("should be able to fetch question comments", async () => {
     await inMemoryQuestionCommentsRepository.create(
       makeQuestionComment({
         createdAt: new Date(2023, 0, 20),
@@ -40,6 +40,7 @@ describe("Fetch Questions Comments", () => {
       page: 1,
     });
 
+    expect(result.value?.questionComments).toHaveLength(3);
     expect(result.value?.questionComments).toEqual([
       expect.objectContaining({
         createdAt: new Date(2023, 0, 23),

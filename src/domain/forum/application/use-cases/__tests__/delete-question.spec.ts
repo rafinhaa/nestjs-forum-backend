@@ -3,8 +3,8 @@ import { DeleteQuestionUseCase } from "../delete-question";
 import { makeQuestion } from "test/factories/make-question";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import { NotAllowedError } from "@/core/errors/errors/not-found-allowed-error";
-import { makeQuestionAttachment } from "test/factories/make-question-attachment";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
+import { makeQuestionAttachment } from "test/factories/make-question-attachments";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments-repository";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;

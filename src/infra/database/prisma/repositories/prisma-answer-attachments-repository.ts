@@ -1,4 +1,4 @@
-import { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answers-attachments-repository";
+import { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answer-attachments-repository";
 import { AnswerAttachment } from "@/domain/forum/enterprise/entities/answer-attachment";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
@@ -19,6 +19,7 @@ export class PrismaAnswerAttachmentsRepository
 
     return answerAttachments.map(PrismaAnswerAttachmentMapper.toDomain);
   }
+
   async deleteManyByAnswerId(answerId: string): Promise<void> {
     await this.prisma.attachment.deleteMany({
       where: {

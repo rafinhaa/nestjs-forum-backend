@@ -1,28 +1,28 @@
+import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
+import { QuestionCommentsRepository } from "@/domain/forum/application/repositories/question-comments-repository";
 import { Either, right } from "@/core/either";
-import { QuestionComment } from "../../enterprise/entities/question-comment";
-import { QuestionCommentsRepository } from "../repositories/question-comments-repository";
 
 const DEFAULT_LIMIT = 20;
 
-interface FetchQuestionsCommentsCaseRequest {
+interface FetchQuestionCommentsUseCaseRequest {
   questionId: string;
   page: number;
   limitPerPage?: number;
 }
 
-type FetchQuestionsCommentsUseCaseResponse = Either<
+type FetchQuestionCommentsUseCaseResponse = Either<
   null,
   { questionComments: QuestionComment[] }
 >;
 
-export class FetchQuestionsCommentsUseCase {
+export class FetchQuestionCommentsUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
   async execute({
     questionId,
     page,
     limitPerPage,
-  }: FetchQuestionsCommentsCaseRequest): Promise<FetchQuestionsCommentsUseCaseResponse> {
+  }: FetchQuestionCommentsUseCaseRequest): Promise<FetchQuestionCommentsUseCaseResponse> {
     const limit = limitPerPage ?? DEFAULT_LIMIT;
 
     const questionComments =

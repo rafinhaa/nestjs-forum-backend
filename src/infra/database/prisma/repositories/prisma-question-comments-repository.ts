@@ -3,7 +3,7 @@ import { QuestionCommentsRepository } from "@/domain/forum/application/repositor
 import { QuestionComment } from "@/domain/forum/enterprise/entities/question-comment";
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
-import { PrismaQuestionCommentMapper } from "../mappers/prisma-question-comment-mappter";
+import { PrismaQuestionCommentMapper } from "../mappers/prisma-question-comment-mapper";
 
 @Injectable()
 export class PrismaQuestionCommentsRepository
@@ -24,6 +24,7 @@ export class PrismaQuestionCommentsRepository
 
     return PrismaQuestionCommentMapper.toDomain(questionComment);
   }
+
   async findManyByQuestionId(
     questionId: string,
     params: PaginationParams
@@ -39,18 +40,17 @@ export class PrismaQuestionCommentsRepository
       skip: (params.page - 1) * params.limitPerPage,
     });
 
-    if (!questionsComments) {
-      return [];
-    }
-
     return questionsComments.map(PrismaQuestionCommentMapper.toDomain);
   }
+
   async create(questionComment: QuestionComment): Promise<void> {
     const data = PrismaQuestionCommentMapper.toPrisma(questionComment);
+
     await this.prisma.comment.create({
       data,
     });
   }
+
   async delete(questionComment: QuestionComment): Promise<void> {
     await this.prisma.comment.delete({
       where: {

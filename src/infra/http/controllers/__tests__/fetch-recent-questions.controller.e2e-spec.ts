@@ -9,9 +9,9 @@ import { StudentFactory } from "test/factories/make-student";
 
 describe("Fetch recent questions (E2E)", () => {
   let app: INestApplication;
-  let jwt: JwtService;
   let studentFactory: StudentFactory;
   let questionFactory: QuestionFactory;
+  let jwt: JwtService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -21,9 +21,9 @@ describe("Fetch recent questions (E2E)", () => {
 
     app = moduleRef.createNestApplication();
 
-    jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(StudentFactory);
     questionFactory = moduleRef.get(QuestionFactory);
+    jwt = moduleRef.get(JwtService);
 
     await app.init();
   });
@@ -31,9 +31,9 @@ describe("Fetch recent questions (E2E)", () => {
   test("[GET] /questions", async () => {
     const user = await studentFactory.makePrismaStudent();
 
-    const accessToken = jwt.sign({ sub: user.id });
+    const accessToken = jwt.sign({ sub: user.id.toString() });
 
-    const [question1, question2] = await Promise.all([
+    const [question2, question1] = await Promise.all([
       questionFactory.makePrismaQuestion({
         authorId: user.id,
       }),
@@ -48,6 +48,7 @@ describe("Fetch recent questions (E2E)", () => {
       .send();
 
     expect(response.statusCode).toBe(200);
+    expect(response.body.questions.length).toEqual(2);
     expect(response.body).toEqual({
       pages: 1,
       questions: [

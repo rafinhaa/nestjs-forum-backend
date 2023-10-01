@@ -11,41 +11,42 @@ export interface NotificationProps {
 }
 
 export class Notification extends Entity<NotificationProps> {
-  get recipientId(): UniqueEntityID {
+  get recipientId() {
     return this.props.recipientId;
   }
 
-  get title(): string {
+  get title() {
     return this.props.title;
   }
 
-  get content(): string {
+  get content() {
     return this.props.content;
   }
 
-  get readAt(): Date | undefined {
+  get readAt() {
     return this.props.readAt;
   }
 
-  get createdAt(): Date {
+  get createdAt() {
     return this.props.createdAt;
   }
 
-  read(): void {
+  read() {
     this.props.readAt = new Date();
   }
 
   static create(
     props: Optional<NotificationProps, "createdAt">,
     id?: UniqueEntityID
-  ): Notification {
+  ) {
     const notification = new Notification(
       {
         ...props,
-        createdAt: props?.createdAt ?? new Date(),
+        createdAt: props.createdAt ?? new Date(),
       },
       id
     );
+
     return notification;
   }
 }

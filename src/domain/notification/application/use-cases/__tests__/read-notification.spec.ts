@@ -2,8 +2,8 @@ import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 import { ReadNotificationUseCase } from "../read-notification";
 import { InMemoryNotificationsRepository } from "test/repositories/in-memory-notifications-repository";
 import { makeNotification } from "test/factories/make-notification";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import { NotAllowedError } from "@/core/errors/errors/not-found-allowed-error";
 
 let inMemoryNotificationsRepository: InMemoryNotificationsRepository;
 let sut: ReadNotificationUseCase;
@@ -30,16 +30,15 @@ describe("Read Notification", () => {
     );
   });
 
-  it("should be not able to read a notification", async () => {
-    const notification = makeNotification(
-      {},
-      new UniqueEntityID("recipient-1")
-    );
+  it("should not be able to read a notification from another user", async () => {
+    const notification = makeNotification({
+      recipientId: new UniqueEntityID("recipient-1"),
+    });
 
-    await inMemoryNotificationsRepository.create(notification);
+    inMemoryNotificationsRepository.create(notification);
 
     const result = await sut.execute({
-      notificationId: notification.id.toValue(),
+      notificationId: notification.id.toString(),
       recipientId: "recipient-2",
     });
 

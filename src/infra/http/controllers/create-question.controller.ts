@@ -1,7 +1,7 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Post } from "@nestjs/common";
 import { CurrentUser } from "@/infra/auth/current-user-decorator";
-import { UserPayload } from "@/infra/auth/jwt-strategy.module";
-import { ZodValidatePipe } from "@/infra/http/pipes/zod-validate-pipe";
+import { UserPayload } from "@/infra/auth/jwt.strategy";
+import { ZodValidationPipe } from "@/infra/http/pipes/zod-validation-pipe";
 import { z } from "zod";
 import { CreateQuestionUseCase } from "@/domain/forum/application/use-cases/create-question";
 
@@ -10,7 +10,7 @@ const createQuestionBodySchema = z.object({
   content: z.string(),
 });
 
-const bodyValidationPipe = new ZodValidatePipe(createQuestionBodySchema);
+const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema);
 
 type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>;
 
@@ -26,11 +26,15 @@ export class CreateQuestionController {
     const { title, content } = body;
     const userId = user.sub;
 
-    await this.createQuestion.execute({
-      authorId: userId,
+    const result = await this.createQuestion.execute({
       title,
       content,
+      authorId: userId,
       attachmentsIds: [],
     });
+
+    if (result.isLeft()) {
+      throw new BadRequestException();
+    }
   }
 }

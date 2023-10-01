@@ -1,6 +1,6 @@
-import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment";
-import { Prisma, Comment as PrismaComment } from "@prisma/client";
+import { Comment as PrismaComment, Prisma } from "@prisma/client";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
+import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment";
 
 export class PrismaAnswerCommentMapper {
   static toDomain(raw: PrismaComment): AnswerComment {
@@ -25,9 +25,9 @@ export class PrismaAnswerCommentMapper {
   ): Prisma.CommentUncheckedCreateInput {
     return {
       id: answerComment.id.toString(),
-      content: answerComment.content,
       authorId: answerComment.authorId.toString(),
       answerId: answerComment.answerId.toString(),
+      content: answerComment.content,
       createdAt: answerComment.createdAt,
       updatedAt: answerComment.updatedAt,
     };

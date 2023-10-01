@@ -7,7 +7,7 @@ it("should be able to create a new slug from text", async () => {
 });
 
 it("should be able to create a new slug", async () => {
-  const slug = Slug.create("New response to the question");
+  const slug = Slug.create("new-response-to-the-question");
 
   expect(slug.value).toBe("new-response-to-the-question");
 });

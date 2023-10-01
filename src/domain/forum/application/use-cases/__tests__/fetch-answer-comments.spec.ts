@@ -21,12 +21,14 @@ describe("Fetch Answer Comments", () => {
         answerId: ANSWER1_ID,
       })
     );
+
     await inMemoryAnswerCommentsRepository.create(
       makeAnswerComment({
         createdAt: new Date(2023, 0, 18),
         answerId: ANSWER1_ID,
       })
     );
+
     await inMemoryAnswerCommentsRepository.create(
       makeAnswerComment({
         createdAt: new Date(2023, 0, 23),
@@ -39,6 +41,7 @@ describe("Fetch Answer Comments", () => {
       page: 1,
     });
 
+    expect(result.value?.answerComments).toHaveLength(3);
     expect(result.value?.answerComments).toEqual([
       expect.objectContaining({
         createdAt: new Date(2023, 0, 23),

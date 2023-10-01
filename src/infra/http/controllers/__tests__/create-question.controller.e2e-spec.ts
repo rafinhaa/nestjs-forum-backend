@@ -8,11 +8,11 @@ import request from "supertest";
 import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
 
-describe("CreateQuestionController e2e", () => {
+describe("Create question (E2E)", () => {
   let app: INestApplication;
   let prisma: PrismaService;
-  let jwt: JwtService;
   let studentFactory: StudentFactory;
+  let jwt: JwtService;
   let questionFactory: QuestionFactory;
 
   beforeAll(async () => {
@@ -24,8 +24,8 @@ describe("CreateQuestionController e2e", () => {
     app = moduleRef.createNestApplication();
 
     prisma = moduleRef.get(PrismaService);
-    jwt = moduleRef.get(JwtService);
     studentFactory = moduleRef.get(StudentFactory);
+    jwt = moduleRef.get(JwtService);
     questionFactory = moduleRef.get(QuestionFactory);
 
     await app.init();
@@ -33,7 +33,9 @@ describe("CreateQuestionController e2e", () => {
 
   test("[POST] /questions", async () => {
     const user = await studentFactory.makePrismaStudent();
-    const question = await questionFactory.makePrismaQuestion();
+    const question = await questionFactory.makePrismaQuestion({
+      authorId: user.id,
+    });
 
     const accessToken = jwt.sign({ sub: user.id.toString() });
 

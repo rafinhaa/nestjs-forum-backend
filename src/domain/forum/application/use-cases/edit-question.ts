@@ -1,11 +1,11 @@
 import { Either, left, right } from "@/core/either";
-import { Question } from "../../enterprise/entities/question";
-import { QuestionsRepository } from "../repositories/questions-repository";
+import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-error";
-import { NotAllowedError } from "@/core/errors/errors/not-found-allowed-error";
-import { QuestionAttachmentsRepository } from "../repositories/question-attachments-repository";
-import { QuestionAttachmentList } from "../../enterprise/entities/question-attachment-list";
-import { QuestionAttachment } from "../../enterprise/entities/question-attachment";
+import { Question } from "@/domain/forum/enterprise/entities/question";
+import { QuestionsRepository } from "../repositories/questions-repository";
+import { QuestionAttachmentsRepository } from "@/domain/forum/application/repositories/question-attachments-repository";
+import { QuestionAttachmentList } from "@/domain/forum/enterprise/entities/question-attachment-list";
+import { QuestionAttachment } from "@/domain/forum/enterprise/entities/question-attachment";
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
 
 interface EditQuestionUseCaseRequest {
@@ -24,28 +24,28 @@ type EditQuestionUseCaseResponse = Either<
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private QuestionAttachmentRepository: QuestionAttachmentsRepository
+    private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
   async execute({
     authorId,
-    content,
-    title,
     questionId,
+    title,
+    content,
     attachmentsIds,
   }: EditQuestionUseCaseRequest): Promise<EditQuestionUseCaseResponse> {
     const question = await this.questionsRepository.findById(questionId);
 
     if (!question) {
-      return left(new ResourceNotFoundError("Question not found"));
+      return left(new ResourceNotFoundError());
     }
 
-    if (question.authorId.toValue() !== authorId) {
+    if (authorId !== question.authorId.toString()) {
       return left(new NotAllowedError());
     }
 
     const currentQuestionAttachments =
-      await this.QuestionAttachmentRepository.findManyByQuestionId(questionId);
+      await this.questionAttachmentsRepository.findManyByQuestionId(questionId);
 
     const questionAttachmentList = new QuestionAttachmentList(
       currentQuestionAttachments
@@ -60,9 +60,9 @@ export class EditQuestionUseCase {
 
     questionAttachmentList.update(questionAttachments);
 
+    question.attachments = questionAttachmentList;
     question.title = title;
     question.content = content;
-    question.attachments = questionAttachmentList;
 
     await this.questionsRepository.save(question);
 

@@ -1,4 +1,4 @@
-import { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answers-attachments-repository";
+import { AnswerAttachmentsRepository } from "@/domain/forum/application/repositories/answer-attachments-repository";
 import { AnswerAttachment } from "@/domain/forum/enterprise/entities/answer-attachment";
 
 export class InMemoryAnswerAttachmentsRepository
@@ -6,7 +6,7 @@ export class InMemoryAnswerAttachmentsRepository
 {
   public items: AnswerAttachment[] = [];
 
-  async findManyByAnswerId(answerId: string): Promise<AnswerAttachment[]> {
+  async findManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
       (item) => item.answerId.toString() === answerId
     );
@@ -14,7 +14,7 @@ export class InMemoryAnswerAttachmentsRepository
     return answerAttachments;
   }
 
-  async deleteManyByAnswerId(answerId: string): Promise<void> {
+  async deleteManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
       (item) => item.answerId.toString() !== answerId
     );

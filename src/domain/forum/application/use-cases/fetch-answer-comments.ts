@@ -1,10 +1,10 @@
+import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment";
+import { AnswerCommentsRepository } from "@/domain/forum/application/repositories/answer-comments-repository";
 import { Either, right } from "@/core/either";
-import { AnswerComment } from "../../enterprise/entities/answer-comment";
-import { AnswerCommentsRepository } from "../repositories/answer-comments-repository";
 
 const DEFAULT_LIMIT = 20;
 
-interface FetchAnswerCommentsCaseRequest {
+interface FetchAnswerCommentsUseCaseRequest {
   answerId: string;
   page: number;
   limitPerPage?: number;
@@ -22,7 +22,7 @@ export class FetchAnswerCommentsUseCase {
     answerId,
     page,
     limitPerPage,
-  }: FetchAnswerCommentsCaseRequest): Promise<FetchAnswerCommentsUseCaseResponse> {
+  }: FetchAnswerCommentsUseCaseRequest): Promise<FetchAnswerCommentsUseCaseResponse> {
     const limit = limitPerPage ?? DEFAULT_LIMIT;
 
     const answerComments =
@@ -31,6 +31,8 @@ export class FetchAnswerCommentsUseCase {
         limitPerPage: limit,
       });
 
-    return right({ answerComments });
+    return right({
+      answerComments,
+    });
   }
 }

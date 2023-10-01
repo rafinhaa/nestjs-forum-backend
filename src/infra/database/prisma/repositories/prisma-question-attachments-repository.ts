@@ -13,14 +13,15 @@ export class PrismaQuestionAttachmentsRepository
   async findManyByQuestionId(
     questionId: string
   ): Promise<QuestionAttachment[]> {
-    const answerAttachments = await this.prisma.attachment.findMany({
+    const questionAttachments = await this.prisma.attachment.findMany({
       where: {
         questionId,
       },
     });
 
-    return answerAttachments.map(PrismaQuestionAttachmentMapper.toDomain);
+    return questionAttachments.map(PrismaQuestionAttachmentMapper.toDomain);
   }
+
   async deleteManyByQuestionId(questionId: string): Promise<void> {
     await this.prisma.attachment.deleteMany({
       where: {
