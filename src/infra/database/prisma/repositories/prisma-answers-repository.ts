@@ -67,4 +67,8 @@ export class PrismaAnswersRepository implements AnswersRepository {
       },
     });
   }
+
+  async getPages({ limitPerPage }: PaginationParams): Promise<number> {
+    return Math.ceil((await this.prisma.question.count()) / limitPerPage);
+  }
 }

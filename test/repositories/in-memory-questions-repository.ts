@@ -63,7 +63,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
     );
   }
 
-  async getPages(params: PaginationParams): Promise<number> {
-    return this.items.length;
+  async getPages({ limitPerPage }: PaginationParams): Promise<number> {
+    return Math.ceil(this.items.length / limitPerPage);
   }
 }

@@ -10,6 +10,7 @@ interface IAnswersRepository {
   create(answer: Answer): Promise<void>;
   save(answer: Answer): Promise<void>;
   delete(answer: Answer): Promise<void>;
+  getPages(params: PaginationParams): Promise<number>;
 }
 
 export abstract class AnswersRepository implements IAnswersRepository {
@@ -21,4 +22,5 @@ export abstract class AnswersRepository implements IAnswersRepository {
   abstract create(answer: Answer): Promise<void>;
   abstract save(answer: Answer): Promise<void>;
   abstract delete(answer: Answer): Promise<void>;
+  abstract getPages(params: PaginationParams): Promise<number>;
 }
