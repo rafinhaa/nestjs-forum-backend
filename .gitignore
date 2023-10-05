@@ -36,6 +36,7 @@ lerna-debug.log*
 
 # Dotenv file
 .env
+.env.test
 
 # Postgre docker folder
 data
