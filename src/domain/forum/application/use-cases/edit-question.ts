@@ -19,7 +19,9 @@ interface EditQuestionUseCaseRequest {
 
 type EditQuestionUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
-  { question: Question }
+  {
+    question: Question;
+  }
 >;
 
 @Injectable()
@@ -68,6 +70,8 @@ export class EditQuestionUseCase {
 
     await this.questionsRepository.save(question);
 
-    return right({ question });
+    return right({
+      question,
+    });
   }
 }
