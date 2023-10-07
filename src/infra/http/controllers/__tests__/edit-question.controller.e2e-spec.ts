@@ -7,7 +7,7 @@ import { Test } from "@nestjs/testing";
 import request from "supertest";
 import { AttachmentFactory } from "test/factories/make-attachment";
 import { QuestionFactory, makeQuestion } from "test/factories/make-question";
-import { QuestionAttachmentsFactory } from "test/factories/make-question-attachments";
+import { QuestionAttachmentFactory } from "test/factories/make-question-attachments";
 import { StudentFactory } from "test/factories/make-student";
 
 describe("Edit question (E2E)", () => {
@@ -17,7 +17,7 @@ describe("Edit question (E2E)", () => {
   let jwt: JwtService;
   let questionFactory: QuestionFactory;
   let attachmentFactory: AttachmentFactory;
-  let questionAttachmentFactory: QuestionAttachmentsFactory;
+  let questionAttachmentFactory: QuestionAttachmentFactory;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -26,7 +26,7 @@ describe("Edit question (E2E)", () => {
         StudentFactory,
         QuestionFactory,
         AttachmentFactory,
-        QuestionAttachmentsFactory,
+        QuestionAttachmentFactory,
       ],
     }).compile();
 
@@ -37,7 +37,7 @@ describe("Edit question (E2E)", () => {
     jwt = moduleRef.get(JwtService);
     questionFactory = moduleRef.get(QuestionFactory);
     attachmentFactory = moduleRef.get(AttachmentFactory);
-    questionAttachmentFactory = moduleRef.get(QuestionAttachmentsFactory);
+    questionAttachmentFactory = moduleRef.get(QuestionAttachmentFactory);
 
     await app.init();
   });
@@ -53,12 +53,12 @@ describe("Edit question (E2E)", () => {
     const attachment1 = await attachmentFactory.makePrismaAttachment();
     const attachment2 = await attachmentFactory.makePrismaAttachment();
 
-    await questionAttachmentFactory.makePrismaQuestionAttachments({
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
       questionId: question.id,
       attachmentId: attachment1.id,
     });
 
-    await questionAttachmentFactory.makePrismaQuestionAttachments({
+    await questionAttachmentFactory.makePrismaQuestionAttachment({
       questionId: question.id,
       attachmentId: attachment2.id,
     });

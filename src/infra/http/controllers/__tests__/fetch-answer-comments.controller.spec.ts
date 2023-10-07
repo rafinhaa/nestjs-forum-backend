@@ -1,7 +1,7 @@
 import { BadRequestException } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { FetchAnswerCommentsController } from "../fetch-anwser-comments.controller";
 import { FetchAnswerCommentsUseCase } from "@/domain/forum/application/use-cases/fetch-answer-comments";
+import { FetchAnswerCommentsController } from "../fetch-answer-comments.controller";
 
 describe("FetchAnswerCommentsController", () => {
   let controller: FetchAnswerCommentsController;

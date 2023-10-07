@@ -40,10 +40,6 @@ export class PrismaAnswerCommentsRepository
       skip: (params.page - 1) * params.limitPerPage,
     });
 
-    if (!answersComments) {
-      return [];
-    }
-
     return answersComments.map(PrismaAnswerCommentMapper.toDomain);
   }
 

@@ -1,5 +1,4 @@
 import { UniqueEntityID } from "@/core/entities/unique-entity-id";
-import { Attachment } from "@/domain/forum/enterprise/entities/attachment";
 
 import {
   QuestionAttachment,
@@ -25,15 +24,15 @@ export function makeQuestionAttachment(
 }
 
 @Injectable()
-export class QuestionAttachmentsFactory {
+export class QuestionAttachmentFactory {
   constructor(private prisma: PrismaService) {}
 
-  async makePrismaQuestionAttachments(
+  async makePrismaQuestionAttachment(
     data: Partial<QuestionAttachmentProps> = {}
   ): Promise<QuestionAttachment> {
     const questionAttachment = makeQuestionAttachment(data);
 
-    await this.prisma.attachment.updateMany({
+    await this.prisma.attachment.update({
       where: {
         id: questionAttachment.attachmentId.toString(),
       },

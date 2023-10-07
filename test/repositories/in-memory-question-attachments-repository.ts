@@ -14,21 +14,23 @@ export class InMemoryQuestionAttachmentsRepository
     return questionAttachments;
   }
 
+  async createMany(attachments: QuestionAttachment[]): Promise<void> {
+    this.items.push(...attachments);
+  }
+
+  async deleteMany(attachments: QuestionAttachment[]): Promise<void> {
+    const questionAttachments = this.items.filter((item) => {
+      return !attachments.some((attachment) => attachment.equals(item));
+    });
+
+    this.items = questionAttachments;
+  }
+
   async deleteManyByQuestionId(questionId: string) {
     const questionAttachments = this.items.filter(
       (item) => item.questionId.toString() !== questionId
     );
 
     this.items = questionAttachments;
-  }
-
-  async deleteMany(attachments: QuestionAttachment[]): Promise<void> {
-    this.items = this.items.filter(
-      (item) => !attachments.some((attachment) => attachment.equals(item))
-    );
-  }
-
-  async createMany(attachments: QuestionAttachment[]): Promise<void> {
-    this.items.push(...attachments);
   }
 }

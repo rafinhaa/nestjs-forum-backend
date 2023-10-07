@@ -7,8 +7,8 @@ export class PrismaAttachmentMapper {
   ): Prisma.AttachmentUncheckedCreateInput {
     return {
       id: attachment.id.toString(),
-      url: attachment.url,
       title: attachment.title,
+      url: attachment.url,
     };
   }
 }

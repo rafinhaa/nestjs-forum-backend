@@ -10,7 +10,7 @@ import { QuestionAttachmentsRepository } from "@/domain/forum/application/reposi
 export class PrismaQuestionsRepository implements QuestionsRepository {
   constructor(
     private prisma: PrismaService,
-    private questionAttachmentRepository: QuestionAttachmentsRepository
+    private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
   async findById(id: string): Promise<Question | null> {
@@ -60,7 +60,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
       data,
     });
 
-    await this.questionAttachmentRepository.createMany(
+    await this.questionAttachmentsRepository.createMany(
       question.attachments.getItems()
     );
   }
@@ -75,11 +75,11 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         },
         data,
       }),
-      this.questionAttachmentRepository.createMany(
-        question.attachments.getItems()
+      this.questionAttachmentsRepository.createMany(
+        question.attachments.getNewItems()
       ),
-      this.questionAttachmentRepository.deleteMany(
-        question.attachments.getItems()
+      this.questionAttachmentsRepository.deleteMany(
+        question.attachments.getRemovedItems()
       ),
     ]);
   }

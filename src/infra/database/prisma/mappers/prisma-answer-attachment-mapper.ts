@@ -5,7 +5,7 @@ import { AnswerAttachment } from "@/domain/forum/enterprise/entities/answer-atta
 export class PrismaAnswerAttachmentMapper {
   static toDomain(raw: PrismaAttachment): AnswerAttachment {
     if (!raw.answerId) {
-      throw new Error("answerId is required");
+      throw new Error("Invalid attachment type.");
     }
 
     return AnswerAttachment.create(

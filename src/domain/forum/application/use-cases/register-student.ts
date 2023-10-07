@@ -13,7 +13,9 @@ interface RegisterStudentUseCaseRequest {
 
 type RegisterStudentUseCaseResponse = Either<
   StudentAlreadyExistsError,
-  { student: Student }
+  {
+    student: Student;
+  }
 >;
 
 @Injectable()
@@ -46,6 +48,8 @@ export class RegisterStudentUseCase {
 
     await this.studentsRepository.create(student);
 
-    return right({ student });
+    return right({
+      student,
+    });
   }
 }

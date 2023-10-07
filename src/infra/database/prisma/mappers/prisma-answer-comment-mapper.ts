@@ -5,7 +5,7 @@ import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment
 export class PrismaAnswerCommentMapper {
   static toDomain(raw: PrismaComment): AnswerComment {
     if (!raw.answerId) {
-      throw new Error("answerId is required");
+      throw new Error("Invalid comment type.");
     }
 
     return AnswerComment.create(

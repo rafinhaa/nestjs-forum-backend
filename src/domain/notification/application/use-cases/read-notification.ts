@@ -11,7 +11,9 @@ interface ReadNotificationUseCaseRequest {
 
 type ReadNotificationUseCaseResponse = Either<
   ResourceNotFoundError | NotAllowedError,
-  { notification: Notification }
+  {
+    notification: Notification;
+  }
 >;
 
 export class ReadNotificationUseCase {

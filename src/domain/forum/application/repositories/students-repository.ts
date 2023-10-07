@@ -1,11 +1,6 @@
 import { Student } from "../../enterprise/entities/student";
 
-interface IStudentsRepository {
-  findByEmail(email: string): Promise<Student | null>;
-  create(student: Student): Promise<void>;
-}
-
-export abstract class StudentsRepository implements IStudentsRepository {
+export abstract class StudentsRepository {
   abstract findByEmail(email: string): Promise<Student | null>;
   abstract create(student: Student): Promise<void>;
 }

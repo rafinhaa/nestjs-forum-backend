@@ -14,7 +14,9 @@ interface CommentOnQuestionUseCaseRequest {
 
 type CommentOnQuestionUseCaseResponse = Either<
   ResourceNotFoundError,
-  { questionComment: QuestionComment }
+  {
+    questionComment: QuestionComment;
+  }
 >;
 
 @Injectable()
@@ -43,6 +45,8 @@ export class CommentOnQuestionUseCase {
 
     await this.questionCommentsRepository.create(questionComment);
 
-    return right({ questionComment });
+    return right({
+      questionComment,
+    });
   }
 }

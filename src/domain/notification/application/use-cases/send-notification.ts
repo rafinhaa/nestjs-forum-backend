@@ -11,7 +11,9 @@ export interface SendNotificationUseCaseRequest {
 
 export type SendNotificationUseCaseResponse = Either<
   null,
-  { notification: Notification }
+  {
+    notification: Notification;
+  }
 >;
 
 export class SendNotificationUseCase {
@@ -30,6 +32,8 @@ export class SendNotificationUseCase {
 
     await this.notificationsRepository.create(notification);
 
-    return right({ notification });
+    return right({
+      notification,
+    });
   }
 }

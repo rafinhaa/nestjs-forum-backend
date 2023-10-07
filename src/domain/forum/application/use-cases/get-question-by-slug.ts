@@ -10,7 +10,9 @@ interface GetQuestionBySlugUseCaseRequest {
 
 type GetQuestionBySlugUseCaseResponse = Either<
   ResourceNotFoundError,
-  { question: Question }
+  {
+    question: Question;
+  }
 >;
 
 @Injectable()
@@ -26,6 +28,8 @@ export class GetQuestionBySlugUseCase {
       return left(new ResourceNotFoundError());
     }
 
-    return right({ question });
+    return right({
+      question,
+    });
   }
 }

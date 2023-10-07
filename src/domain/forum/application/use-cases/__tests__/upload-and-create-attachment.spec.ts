@@ -31,7 +31,7 @@ describe("Upload and create attachment", () => {
     });
     expect(fakerUploader.uploads).toHaveLength(1);
     expect(fakerUploader.uploads[0]).toEqual({
-      filename: "jane.doe.profile.png",
+      fileName: "jane.doe.profile.png",
       url: expect.any(String),
     });
   });

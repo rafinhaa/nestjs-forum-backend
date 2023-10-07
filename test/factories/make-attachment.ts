@@ -16,7 +16,7 @@ export function makeAttachment(
   const attachment = Attachment.create(
     {
       title: faker.lorem.slug(),
-      url: faker.internet.url(),
+      url: faker.lorem.slug(),
       ...override,
     },
     id

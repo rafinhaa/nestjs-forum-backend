@@ -33,8 +33,8 @@ export class CommentOnQuestionController {
     const userId = user.sub;
 
     const result = await this.commentOnQuestion.execute({
-      questionId,
       content,
+      questionId,
       authorId: userId,
     });
 

@@ -22,8 +22,8 @@ export class DeleteQuestionCommentController {
     const userId = user.sub;
 
     const result = await this.deleteQuestionComment.execute({
-      authorId: userId,
       questionCommentId,
+      authorId: userId,
     });
 
     if (result.isLeft()) {

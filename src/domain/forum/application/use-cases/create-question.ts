@@ -13,7 +13,12 @@ interface CreateQuestionUseCaseRequest {
   attachmentsIds: string[];
 }
 
-type CreateQuestionUseCaseResponse = Either<null, { question: Question }>;
+type CreateQuestionUseCaseResponse = Either<
+  null,
+  {
+    question: Question;
+  }
+>;
 
 @Injectable()
 export class CreateQuestionUseCase {
@@ -42,6 +47,8 @@ export class CreateQuestionUseCase {
 
     await this.questionsRepository.create(question);
 
-    return right({ question });
+    return right({
+      question,
+    });
   }
 }
