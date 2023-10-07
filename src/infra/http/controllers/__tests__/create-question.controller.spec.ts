@@ -37,6 +37,7 @@ describe("CreateQuestionController", () => {
           {
             title: "Invalid Title",
             content: "Invalid Content",
+            attachments: [],
           },
           { sub: "user-id" }
         )

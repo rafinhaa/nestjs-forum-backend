@@ -36,6 +36,7 @@ describe("AnswerQuestionController", () => {
         await controller.handle(
           {
             content: "Invalid Content",
+            attachments: [],
           },
           { sub: "user-id" },
           "question-id"

@@ -34,6 +34,7 @@ describe("EditAnswerController", () => {
         await controller.handle(
           {
             content: "new content",
+            attachments: [],
           },
           { sub: "user-id" },
           "answer-id"

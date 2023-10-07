@@ -35,6 +35,7 @@ describe("EditQuestionController", () => {
           {
             title: "Invalid Title",
             content: "Invalid Content",
+            attachments: [],
           },
           { sub: "user-id" },
           "question-id"
