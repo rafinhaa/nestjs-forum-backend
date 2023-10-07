@@ -2,6 +2,7 @@ import { QuestionComment } from "@/domain/forum/enterprise/entities/question-com
 import { QuestionCommentsRepository } from "@/domain/forum/application/repositories/question-comments-repository";
 import { Either, right } from "@/core/either";
 import { Injectable } from "@nestjs/common";
+import { CommentWithAuthor } from "../../enterprise/entities/value-objects/comment-with-author";
 
 const DEFAULT_LIMIT = 20;
 
@@ -13,7 +14,7 @@ interface FetchQuestionCommentsUseCaseRequest {
 
 type FetchQuestionCommentsUseCaseResponse = Either<
   null,
-  { pages: number; questionComments: QuestionComment[] }
+  { pages: number; comments: CommentWithAuthor[] }
 >;
 
 @Injectable()
@@ -30,12 +31,15 @@ export class FetchQuestionCommentsUseCase {
       page,
     });
 
-    const questionComments =
-      await this.questionCommentsRepository.findManyByQuestionId(questionId, {
-        page,
-        limitPerPage,
-      });
+    const comments =
+      await this.questionCommentsRepository.findManyByQuestionIdWithAuthor(
+        questionId,
+        {
+          page,
+          limitPerPage,
+        }
+      );
 
-    return right({ pages, questionComments });
+    return right({ pages, comments });
   }
 }
