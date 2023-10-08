@@ -2,6 +2,7 @@ import { AnswerComment } from "@/domain/forum/enterprise/entities/answer-comment
 import { AnswerCommentsRepository } from "@/domain/forum/application/repositories/answer-comments-repository";
 import { Either, right } from "@/core/either";
 import { Injectable } from "@nestjs/common";
+import { CommentWithAuthor } from "../../enterprise/entities/value-objects/comment-with-author";
 
 const DEFAULT_LIMIT = 20;
 
@@ -13,7 +14,7 @@ interface FetchAnswerCommentsUseCaseRequest {
 
 type FetchAnswerCommentsUseCaseResponse = Either<
   null,
-  { pages: number; answerComments: AnswerComment[] }
+  { pages: number; comments: CommentWithAuthor[] }
 >;
 
 @Injectable()
@@ -30,15 +31,18 @@ export class FetchAnswerCommentsUseCase {
       page,
     });
 
-    const answerComments =
-      await this.answerCommentsRepository.findManyByAnswerId(answerId, {
-        page,
-        limitPerPage,
-      });
+    const comments =
+      await this.answerCommentsRepository.findManyByAnswerIdWithAuthor(
+        answerId,
+        {
+          page,
+          limitPerPage,
+        }
+      );
 
     return right({
       pages,
-      answerComments,
+      comments,
     });
   }
 }

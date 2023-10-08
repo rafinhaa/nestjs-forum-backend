@@ -77,12 +77,16 @@ describe("Fetch answer comment (E2E)", () => {
       pages: 1,
       comments: expect.arrayContaining([
         {
+          authorId: user.id.toString(),
+          authorName: user.name,
           id: answerComment2.id.toString(),
           content: answerComment2.content,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
         },
         {
+          authorId: user.id.toString(),
+          authorName: user.name,
           id: answerComment1.id.toString(),
           content: answerComment1.content,
           createdAt: expect.any(String),
