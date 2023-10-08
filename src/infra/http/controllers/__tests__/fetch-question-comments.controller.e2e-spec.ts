@@ -68,12 +68,16 @@ describe("Fetch question comment (E2E)", () => {
           content: questionComment2.content,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
+          authorName: user.name,
+          authorId: user.id.toString(),
         },
         {
           id: questionComment1.id.toString(),
           content: questionComment1.content,
           createdAt: expect.any(String),
           updatedAt: expect.any(String),
+          authorName: user.name,
+          authorId: user.id.toString(),
         },
       ]),
     });
