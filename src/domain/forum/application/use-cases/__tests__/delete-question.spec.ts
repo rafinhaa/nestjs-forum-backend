@@ -6,9 +6,13 @@ import { ResourceNotFoundError } from "@/core/errors/errors/resource-not-found-e
 import { NotAllowedError } from "@/core/errors/errors/not-allowed-error";
 import { makeQuestionAttachment } from "test/factories/make-question-attachments";
 import { InMemoryQuestionAttachmentsRepository } from "test/repositories/in-memory-question-attachments-repository";
+import { InMemoryAttachmentsRepository } from "test/repositories/in-memory-attachments-repository";
+import { InMemoryStudentsRepository } from "test/repositories/in-memory-students-repository";
 
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository;
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository;
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository;
+let inMemoryStudentsRepository: InMemoryStudentsRepository;
 let sut: DeleteQuestionUseCase;
 
 describe("Delete Question", () => {
@@ -16,7 +20,9 @@ describe("Delete Question", () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository();
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
-      inMemoryQuestionAttachmentsRepository
+      inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository
     );
 
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository);

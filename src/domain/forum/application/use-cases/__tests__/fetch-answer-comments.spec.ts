@@ -50,8 +50,6 @@ describe("Fetch Answer Comments", () => {
       page: 1,
     });
 
-    console.log(result.value?.comments);
-
     expect(result.value?.comments).toHaveLength(3);
     expect(result.value?.comments).toEqual([
       expect.objectContaining({
