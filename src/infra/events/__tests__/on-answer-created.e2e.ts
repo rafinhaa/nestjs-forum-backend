@@ -8,13 +8,13 @@ import request from "supertest";
 import { AttachmentFactory } from "test/factories/make-attachment";
 import { QuestionFactory } from "test/factories/make-question";
 import { StudentFactory } from "test/factories/make-student";
-import { waitFor } from "test/utils/wait-for";
 
-describe("On answer created (E2E)", () => {
+describe("Answer question (E2E)", () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let studentFactory: StudentFactory;
   let questionFactory: QuestionFactory;
+  let attachmentFactory: AttachmentFactory;
   let jwt: JwtService;
 
   beforeAll(async () => {
@@ -28,12 +28,13 @@ describe("On answer created (E2E)", () => {
     prisma = moduleRef.get(PrismaService);
     studentFactory = moduleRef.get(StudentFactory);
     questionFactory = moduleRef.get(QuestionFactory);
+    attachmentFactory = moduleRef.get(AttachmentFactory);
     jwt = moduleRef.get(JwtService);
 
     await app.init();
   });
 
-  it("should send a notification when answer is created", async () => {
+  test("[POST] /questions/:questionId/answers", async () => {
     const user = await studentFactory.makePrismaStudent();
 
     const accessToken = jwt.sign({ sub: user.id.toString() });
@@ -44,22 +45,33 @@ describe("On answer created (E2E)", () => {
 
     const questionId = question.id.toString();
 
-    await request(app.getHttpServer())
+    const attachment1 = await attachmentFactory.makePrismaAttachment();
+    const attachment2 = await attachmentFactory.makePrismaAttachment();
+
+    const response = await request(app.getHttpServer())
       .post(`/questions/${questionId}/answers`)
       .set("Authorization", `Bearer ${accessToken}`)
       .send({
         content: "New answer",
-        attachments: [],
+        attachments: [attachment1.id.toString(), attachment2.id.toString()],
       });
 
-    await waitFor(async () => {
-      const notificationOnDatabase = await prisma.notification.findFirst({
-        where: {
-          content: user.id.toString(),
-        },
-      });
+    expect(response.statusCode).toBe(201);
 
-      expect(notificationOnDatabase).not.toBeNull();
+    const answerOnDatabase = await prisma.answer.findFirst({
+      where: {
+        content: "New answer",
+      },
     });
+
+    expect(answerOnDatabase).toBeTruthy();
+
+    const attachmentsOnDatabase = await prisma.attachment.findMany({
+      where: {
+        answerId: answerOnDatabase?.id,
+      },
+    });
+
+    expect(attachmentsOnDatabase).toHaveLength(2);
   });
 });
